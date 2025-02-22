@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "./variables.scss";
+
+main {
+  width: 100%;
+  min-height: 100%;
+  z-index: -100;
+}
+
+a {
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+
+  &:hover {
+      text-decoration: none;
+  }
+
+  &:active,
+  &:visited {
+      text-decoration: none;
+  }
+}
