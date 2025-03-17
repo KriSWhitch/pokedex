@@ -9,8 +9,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        primary: ['var(--font-sigmar-one)', 'sans-serif'],
-        secondary: ['var(--font-kdam-thmor-pro)', 'sans-serif'],
+        primary: ['var(--font-nunito)', 'sans-serif'],
+        secondary: ['var(--font-press-start-2p)', 'sans-serif'],
       },
       colors: {
         greyColor: '#ADADAD',
