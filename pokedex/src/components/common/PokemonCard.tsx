@@ -1,20 +1,21 @@
 "use client";
-import { Pokemon, PokemonReference } from "@/lib/definitions";
+import { Pokemon, PokemonType } from "@/lib/definitions";
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
+import Link from "next/link";
+import { fetchData } from "@/constants/api";
 
 export interface PokemonCardProps {
-  pokemonReference: PokemonReference
+  pokemonUrl: string
 }
 
-const PokemonCard: FC<PokemonCardProps> = ({ pokemonReference }) => {
+const PokemonCard: FC<PokemonCardProps> = ({ pokemonUrl }) => {
   const [pokemon, setPokemon] = useState<Pokemon>();
   const [pokemonFormatedId, setPokemonFormatedId] = useState<string>("");
 
   const fetchPokemon = async (url: string) => {
-    const response = await fetch(url);
-    const data = await response.json();
+    const data: Pokemon = await fetchData(url);
     setPokemon(data);
   }
 
@@ -27,7 +28,7 @@ const PokemonCard: FC<PokemonCardProps> = ({ pokemonReference }) => {
   }
 
   useEffect(() => {
-    fetchPokemon(pokemonReference.url);
+    fetchPokemon(pokemonUrl);
   }, []);
 
   useEffect(() => {
@@ -40,17 +41,17 @@ const PokemonCard: FC<PokemonCardProps> = ({ pokemonReference }) => {
     pokemon 
     ? <li key={pokemon.name} className="pokemon-card__container w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex flex-col justify-center items-center p-4">
         <div className="pokemon-card border-gray-700 border-2 border-r-4 shadow-lg rounded-lg w-full h-full flex flex-col justify-start items-center">
-          <a className="w-full flex flex-col justify-center items-center" href={`/pokedex/${pokemon.name}`}>
+          <Link className="w-full flex flex-col justify-center items-center" href={`/pokedex/${pokemon.name}`}>
             <div className="pokemon-image bg-gray-100 rounded-t-md w-full flex flex-col justify-center items-center">
               <Image src={`/images/sprites/pokemon/${pokemon.id}.png`} 
                      width={475} height={475} alt={`Pokemon: ${pokemon.name}`} />
             </div>
-          </a>
+          </Link>
           <div className="pokemon-info flex flex-col justify-center items-center p-2 pb-4">
             <p className="pokemon-id text-gray-400 text-xs mb-1">#{pokemonFormatedId}</p>
             <div className="pokemon-name text-2xl break-all mb-2">{capitalizeFirstLetter(pokemon.name)}</div>
             <ul className="pokemon-types flex gap-2 flex-wrap justify-center items-center">
-              {pokemon.types.map((type) => {
+              {pokemon.types.map((type: PokemonType) => {
                 return (<li key={type.type.name} 
                             className={clsx("pokemon-type text-sm rounded-md px-4 py-1 min-w-12 flex justify-center items-center", 
                             {
