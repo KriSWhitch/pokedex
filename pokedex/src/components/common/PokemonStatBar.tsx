@@ -1,47 +1,48 @@
 "use client";
 import { MAX_BASE_STAT_VALUE } from '@/constants/consts';
 import { PokemonStat } from '@/lib/definitions';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import clsx from 'clsx';
 
-interface PokemonStatBarProps {
-  pokemonStat: PokemonStat,
-  totalCells: number,
-  className: string,
-  key: string
-}
+type PokemonStatBarProps = {
+  pokemonStat: PokemonStat;
+  totalCells: number;
+  className?: string;
+};
 
-const PokemonStatBar: FC<PokemonStatBarProps> = ({ pokemonStat, totalCells, className, key }) => {
-  const [stat, setStat] = useState<PokemonStat | null>();
+export default function PokemonStatBar({
+  pokemonStat,
+  totalCells,
+  className = ""
+}: PokemonStatBarProps) {
   const [filledCells, setFilledCells] = useState(0);
 
-  function formatStatName(statName: string): string {
-    return statName.toUpperCase().replace(/-/g, ' ');
-  }
+  const formatStatName = (name: string) => name.toUpperCase().replace(/-/g, ' ');
 
   useEffect(() => {
-    setStat(pokemonStat);
-  }, []);
+    const calculatedCells = Math.floor(
+      (pokemonStat.base_stat / MAX_BASE_STAT_VALUE) * totalCells
+    );
 
-  useEffect(() => {
-    setFilledCells(Math.floor(((stat?.base_stat ?? 0) / MAX_BASE_STAT_VALUE) * totalCells));
-  }, [stat]);
+    setFilledCells(calculatedCells);
+  }, [pokemonStat, totalCells]);
 
   return (
-    stat &&
-    <div key={key} className={className}>
-      <ul className="flex flex-col-reverse items-center gap-1 mb-2 flex-wrap">
-        {Array.from({ length: totalCells }, (_, index) => (
+    <div className={className}>
+      <ul className="flex flex-col-reverse items-center gap-1 mb-2">
+        {Array.from({ length: totalCells }).map((_, index) => (
           <li
-          key={index}
-          className={`w-10 xl:w-16 md:w-14 sm:w-12 h-2 rounded-sm ${
-            index < filledCells ? "bg-[#4d92d7]" : "bg-white"
-          }`}
-        />
+            key={index}
+            className={clsx(
+              "w-10 sm:w-12 md:w-14 xl:w-16 h-2 rounded-sm",
+              index < filledCells ? "bg-[#4d92d7]" : "bg-white"
+            )}
+          />
         ))}
       </ul>
-      <div className='flex justify-center items-center text-center text-xs text-white'>{formatStatName(stat.stat.name)}</div>
+      <div className="text-center text-xs text-white">
+        {formatStatName(pokemonStat.stat.name)}
+      </div>
     </div>
   );
 }
-
-export default PokemonStatBar;

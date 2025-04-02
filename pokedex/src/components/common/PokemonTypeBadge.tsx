@@ -1,15 +1,14 @@
-import { PokemonTypeName } from '@/lib/enums';
+import { BadgeSize, PokemonTypeName } from '@/lib/enums';
 import clsx from 'clsx';
-import { ReactNode } from 'react';
 
-interface PokemonTypeBadgeProps {
+type PokemonTypeBadgeProps = {
   type: PokemonTypeName;
-  size?: 'sm' | 'md' | 'lg';
+  size?: BadgeSize;
   className?: string;
-  children?: ReactNode;
-}
+  children?: React.ReactNode;
+};
 
-const typeColors: Record<PokemonTypeName, string> = {
+const TYPE_COLORS: Record<PokemonTypeName, string> = {
   normal: 'bg-[#9199a3]',
   fighting: 'bg-[#cf4169]',
   flying: 'bg-[#8fa9dc]',
@@ -29,37 +28,33 @@ const typeColors: Record<PokemonTypeName, string> = {
   dark: 'bg-[#5b5464]',
   fairy: 'bg-[#ec90e7]',
   stellar: 'bg-[#485172]',
-  unknown: 'bg-[#95c5b7]',
+  unknown: 'bg-[#95c5b7]'
 };
 
-const sizeClasses = {
+const SIZE_CLASSES: Record<BadgeSize, string> = {
   sm: 'text-xs px-2 py-0.5 min-w-10',
   md: 'text-sm px-3 py-1 min-w-12',
-  lg: 'text-base px-4 py-1.5 min-w-16',
-} as const;
-
-const capitalize = (str: string): string => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  lg: 'text-base px-4 py-1.5 min-w-16'
 };
+
+const formatTypeName = (type: string) => type.charAt(0).toUpperCase() + type.slice(1);
 
 export const PokemonTypeBadge = ({ 
   type, 
   size = 'md', 
   className = '',
-  children
-}: PokemonTypeBadgeProps) => {
-  return (
-    <span
-      className={clsx(
-        'inline-flex items-center justify-center rounded-md font-medium text-white',
-        typeColors[type] ?? 'bg-gray-500',
-        sizeClasses[size],
-        className
-      )}
-      aria-label={`${type} type`}
-      title={`${capitalize(type)} type`}
-    >
-      {children ?? capitalize(type)}
-    </span>
-  );
-};
+  children 
+}: PokemonTypeBadgeProps) => (
+  <span
+    className={clsx(
+      'inline-flex items-center justify-center rounded-md font-medium text-white',
+      TYPE_COLORS[type] ?? 'bg-gray-500',
+      SIZE_CLASSES[size],
+      className
+    )}
+    aria-label={`${type} type`}
+    title={formatTypeName(type)}
+  >
+    {children ?? formatTypeName(type)}
+  </span>
+);

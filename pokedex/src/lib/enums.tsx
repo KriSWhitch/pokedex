@@ -20,4 +20,4 @@ export type PokemonTypeName =
   | 'stellar'
   | 'unknown';
 
-  
+export type BadgeSize = 'sm' | 'md' | 'lg';

@@ -1,4 +1,23 @@
+import { Section } from '@/components/ui/Section';
+import { TechTag } from '@/components/ui/TechTag';
 import Link from 'next/link';
+
+const technologies = [
+  'Next.js 15',
+  'React 19',
+  'TypeScript',
+  'Tailwind CSS',
+  'PokéAPI',
+  'Axios'
+];
+
+const features = [
+  'Detailed Pokémon profiles',
+  'Type and weakness visualization',
+  'Responsive UI',
+  'Fast search functionality',
+  'Performance optimizations'
+];
 
 export default function About() {
   return (
@@ -8,50 +27,33 @@ export default function About() {
       </h1>
       
       <div className="space-y-6">
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Project Overview</h2>
+        <Section title="Project Overview">
           <p className="text-gray-700">
             A functional Pokédex with detailed Pokémon information including stats, types, and weaknesses. 
             The project uses the official Pokémon API to fetch up-to-date data.
           </p>
-        </div>
+        </Section>
 
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Technologies Used</h2>
+        <Section title="Technologies Used">
           <div className="flex flex-wrap gap-2">
-            {[
-              'Next.js 15',
-              'React 19',
-              'TypeScript',
-              'Tailwind CSS',
-              'PokéAPI',
-              'Axios'
-            ].map(tech => (
-              <span 
-                key={tech}
-                className="bg-gray-800 text-yellow-400 px-3 py-1 rounded-full text-sm"
-              >
-                {tech}
-              </span>
+            {technologies.map(tech => (
+              <TechTag key={tech} tech={tech} />
             ))}
           </div>
-        </div>
+        </Section>
 
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Key Features</h2>
+        <Section title="Key Features">
           <ul className="list-disc pl-5 space-y-1 text-gray-700">
-            <li>Detailed Pokémon profiles</li>
-            <li>Type and weakness visualization</li>
-            <li>Responsive UI</li>
-            <li>Fast search functionality</li>
-            <li>Performance optimizations</li>
+            {features.map(feature => (
+              <li key={feature}>{feature}</li>
+            ))}
           </ul>
-        </div>
+        </Section>
 
         <div className="pt-4">
           <Link 
             href="/pokedex" 
-            className="inline-block bg-gray-800 hover:bg-gray-700 text-yellow-400 hover:text-yellow-300 px-4 py-2 rounded transition-colors mb-4"
+            className="inline-block bg-gray-800 hover:bg-gray-700 text-yellow-400 hover:text-yellow-300 px-4 py-2 rounded transition-colors"
           >
             Back to Pokédex
           </Link>

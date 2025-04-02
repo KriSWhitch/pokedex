@@ -12,11 +12,6 @@ export default {
         primary: ['var(--font-nunito)', 'sans-serif'],
         secondary: ['var(--font-press-start-2p)', 'sans-serif'],
       },
-      colors: {
-        greyColor: '#ADADAD',
-        blueColor: '#5E84D7',
-        lightBlueColor: '#5e84d7b3',
-      },
     },
   },
   plugins: [],

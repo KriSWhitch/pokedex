@@ -1,59 +1,57 @@
 "use client";
 import { Pokemon } from "@/lib/definitions";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { fetchData } from "@/constants/api";
 
-export interface EvolutionChainPokemonCardProps {
-  pokemonUrl: string
-}
+type EvolutionChainPokemonCardProps = {
+  pokemonUrl: string;
+};
 
-const EvolutionChainPokemonCard: FC<EvolutionChainPokemonCardProps> = ({ pokemonUrl }) => {
+const formatPokemonId = (id: number) => id.toString().padStart(4, '0');
+const capitalizeName = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
+
+export default function EvolutionChainPokemonCard({ pokemonUrl }: EvolutionChainPokemonCardProps) {
   const [pokemon, setPokemon] = useState<Pokemon>();
-  const [pokemonFormatedId, setPokemonFormatedId] = useState<string>("");
-
-  const fetchPokemon = async (url: string) => {
-    const data: Pokemon = await fetchData(url);
-    setPokemon(data);
-  }
-
-  function formatNumberToFourDigits(number: number) {
-    return number.toString().padStart(4, '0');
-  }
-
-  function capitalizeFirstLetter(str: string) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
+  const [formattedId, setFormattedId] = useState("");
 
   useEffect(() => {
-    fetchPokemon(pokemonUrl);
+    const loadPokemon = async () => {
+      const data: Pokemon = await fetchData(pokemonUrl);
+      setPokemon(data);
+      setFormattedId(formatPokemonId(data.id));
+    };
+
+    loadPokemon();
   }, [pokemonUrl]);
 
-  useEffect(() => {
-    if (pokemon) {
-      setPokemonFormatedId(formatNumberToFourDigits(pokemon.id));
-    }
-  }, [pokemon]);
+  if (!pokemon) return null;
 
   return (
-    pokemon 
-    ? <li key={pokemon.name} className="pokemon-chain-card__container lg:w-24 flex flex-col justify-center items-center">
-        <div className="pokemon-chain-card w-full h-full flex flex-col justify-start items-center">
-          <Link className="w-full flex flex-col justify-center items-center mb-2" href={`/pokedex/${pokemon.name}`}>
-            <div className="pokemon-image border-white border-4 bg-gray-400 rounded-full p-2 w-full max-w-64 flex flex-col justify-center items-center">
-              <Image src={`/images/sprites/pokemon/${pokemon.id}.png`} 
-                     width={475} height={475} alt={`Pokemon: ${pokemon.name}`} />
-            </div>
-          </Link>
-          <div className="pokemon-info flex flex-col justify-center items-center">
-            <p className="pokemon-id text-gray-400 text-xs mb-1">#{pokemonFormatedId}</p>
-            <div className="pokemon-name text-white text-sm break-all mb-2">{capitalizeFirstLetter(pokemon.name)}</div>
+    <li className="lg:w-24 flex flex-col items-center">
+      <div className="w-full flex flex-col items-center">
+        <Link 
+          href={`/pokedex/${pokemon.name}`}
+          className="w-full flex flex-col items-center mb-2"
+          aria-label={`View ${pokemon.name} details`}
+        >
+          <div className="border-4 border-white bg-gray-400 rounded-full p-2 w-full max-w-64">
+            <Image 
+              src={`/images/sprites/pokemon/${pokemon.id}.png`}
+              width={475}
+              height={475}
+              alt={pokemon.name}
+              className="object-contain"
+            />
           </div>
+        </Link>
+        
+        <div className="flex flex-col items-center">
+          <span className="text-gray-400 text-xs mb-1">#{formattedId}</span>
+          <span className="text-white text-sm">{capitalizeName(pokemon.name)}</span>
         </div>
+      </div>
     </li>
-    : <></>
   );
 }
-
-export default EvolutionChainPokemonCard;
