@@ -7,8 +7,7 @@ const technologies = [
   'React 19',
   'TypeScript',
   'Tailwind CSS',
-  'PokéAPI',
-  'Axios'
+  'PokéAPI'
 ];
 
 const features = [
