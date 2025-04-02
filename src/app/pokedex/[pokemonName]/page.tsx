@@ -28,13 +28,13 @@ export default async function PokemonDetailsPage({ params }: PokemonDetailsPageP
     })
   ).then(results => Array.from(new Map(results.flat().map(w => [w.name, w])).values()));
 
-  const englishDescription = pokemonSpecies.flavor_text_entries
-    .find((entry: FlavorTextEntry) => 
+  const englishDescription = pokemonSpecies?.flavor_text_entries
+    ?.find((entry: FlavorTextEntry) => 
       entry.language.name === 'en' && 
       entry.version.name === 'shield'
     )?.flavor_text;
 
-  const englishGenus = pokemonSpecies.genera
+  const englishGenus = pokemonSpecies?.genera
     .find((genera: Genera) => genera.language.name === 'en')?.genus
     ?.split(' ')[0];
 
@@ -90,7 +90,7 @@ export default async function PokemonDetailsPage({ params }: PokemonDetailsPageP
             <PokemonTypeSection title="Type" types={pokemon.types.map(t => t.type.name)} />
             <PokemonTypeSection title="Weaknesses" types={weaknesses.map(w => w.name)} />
 
-            {pokemonSpecies.evolution_chain?.url && (
+            {pokemonSpecies?.evolution_chain?.url && (
               <div className="bg-gray-800 border-2 border-gray-800 rounded-lg p-4">
                 <h2 className="text-yellow-400 text-xl mb-4">Evolution</h2>
                 <PokemonEvolutionChain evolutionChainUrl={pokemonSpecies.evolution_chain.url} />
