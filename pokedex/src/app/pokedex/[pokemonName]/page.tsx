@@ -1,8 +1,8 @@
 import PokemonEvolutionChain from "@/components/common/PokemonEvolutionChain";
 import PokemonStatBar from "@/components/common/PokemonStatBar";
+import { PokemonTypeBadge } from "@/components/common/PokemonTypeBadge";
 import { API_ENDPOINTS, createUrl, fetchData } from "@/constants/api";
 import { Ability, FlavorTextEntry, Genera, Pokemon, PokemonSpecies, PokemonStat, PokemonType, Type } from "@/lib/definitions";
-import clsx from "clsx";
 import Image from "next/image";
 
 interface PokemonDetailsPageProps {
@@ -30,7 +30,7 @@ export default async function PokemonDetailsPage({ params }: PokemonDetailsPageP
 
   function hectogramsToKilograms(hg: number) {
     const kilograms = hg * 0.1;
-    return kilograms;
+    return Math.round(kilograms * 100) / 100;
   }
 
   const pokemonUrl:string = `${createUrl(API_ENDPOINTS.POKEMON)}/${pokemonName}`;
@@ -114,30 +114,11 @@ export default async function PokemonDetailsPage({ params }: PokemonDetailsPageP
                 <div className="pokemon-types-label text-xl text-gray-800 mb-2">Type</div>
                 <div className="pokemon-types-values flex flex-wrap gap-2">
                   {pokemon.types.map((type: PokemonType) => (
-                    <div className={clsx("pokemon-type text-sm rounded-md px-4 py-1 w-fit min-w-12 md:min-w-24 lg:min-w-32 flex justify-center items-center", 
-                    {
-                      "bg-[#9199a3] text-white": type.type.name === "normal",
-                      "bg-[#cf4169] text-white": type.type.name === "fighting",
-                      "bg-[#8fa9dc] text-white": type.type.name === "flying",
-                      "bg-[#a86bc8] text-white": type.type.name === "poison",
-                      "bg-[#d87845] text-white": type.type.name === "ground",
-                      "bg-[#c3b88a] text-white": type.type.name === "rock",
-                      "bg-[#4d553e] text-white": type.type.name === "bug",
-                      "bg-[#5269ad] text-white": type.type.name === "ghost",
-                      "bg-[#588fa3] text-white": type.type.name === "steel",
-                      "bg-[#ff9d54] text-white": type.type.name === "fire",
-                      "bg-[#4d92d7] text-white": type.type.name === "water",
-                      "bg-[#5fbe56] text-white": type.type.name === "grass",
-                      "bg-[#f4d23b] text-white": type.type.name === "electric",
-                      "bg-[#f67476] text-white": type.type.name === "psychic",
-                      "bg-[#73cebf] text-white": type.type.name === "ice",
-                      "bg-[#0b6dc4] text-white": type.type.name === "dragon",
-                      "bg-[#5b5464] text-white": type.type.name === "dark",
-                      "bg-[#ec90e7] text-white": type.type.name === "fairy",
-                      "bg-[#485172] text-white": type.type.name === "stellar",
-                      "bg-[#95c5b7] text-white": type.type.name === "unknown",
-                    }
-                    )} key={type.type.name}>{capitalizeFirstLetter(type.type.name)}</div>
+                    <PokemonTypeBadge 
+                      key={type.type.name} 
+                      type={type.type.name}
+                      size="lg"
+                    />
                   ))}
                 </div>
               </div>
@@ -146,40 +127,22 @@ export default async function PokemonDetailsPage({ params }: PokemonDetailsPageP
               <div className="pokemon-weaknesses mb-4">
               <div className="pokemon-weaknesses-label text-xl text-gray-800 mb-2">Weaknesses</div>
                 <div className="pokemon-weaknesses-values flex flex-wrap gap-2">
-                  {uniqueWeaknesses.map((weakness: Type) => (<div className={clsx("pokemon-type text-sm rounded-md px-4 py-1 w-fit min-w-12 md:min-w-24 lg:min-w-32 flex justify-center items-center", 
-                    {
-                      "bg-[#9199a3] text-white": weakness.name === "normal",
-                      "bg-[#cf4169] text-white": weakness.name === "fighting",
-                      "bg-[#8fa9dc] text-white": weakness.name === "flying",
-                      "bg-[#a86bc8] text-white": weakness.name === "poison",
-                      "bg-[#d87845] text-white": weakness.name === "ground",
-                      "bg-[#c3b88a] text-white": weakness.name === "rock",
-                      "bg-[#4d553e] text-white": weakness.name === "bug",
-                      "bg-[#5269ad] text-white": weakness.name === "ghost",
-                      "bg-[#588fa3] text-white": weakness.name === "steel",
-                      "bg-[#ff9d54] text-white": weakness.name === "fire",
-                      "bg-[#4d92d7] text-white": weakness.name === "water",
-                      "bg-[#5fbe56] text-white": weakness.name === "grass",
-                      "bg-[#f4d23b] text-white": weakness.name === "electric",
-                      "bg-[#f67476] text-white": weakness.name === "psychic",
-                      "bg-[#73cebf] text-white": weakness.name === "ice",
-                      "bg-[#0b6dc4] text-white": weakness.name === "dragon",
-                      "bg-[#5b5464] text-white": weakness.name === "dark",
-                      "bg-[#ec90e7] text-white": weakness.name === "fairy",
-                      "bg-[#485172] text-white": weakness.name === "stellar",
-                      "bg-[#95c5b7] text-white": weakness.name === "unknown",
-                    }
-                    )} key={weakness.name}>{capitalizeFirstLetter(weakness.name)}</div>))
+                  {uniqueWeaknesses.map((weakness: Type) => (
+                    <PokemonTypeBadge 
+                      key={weakness.name} 
+                      type={weakness.name}
+                      size="lg"
+                    />))
                   }
                 </div>
               </div>
 
 
               {/* Evolution Section */}
-              <div className="pokemon-evolution flex flex-col bg-gray-800 border-2 border-gray-800 rounded-md p-4">
-                <div className="pokemon-evolution-label text-xl text-yellow-400 mb-2">Evolution</div>
+              {pokemonSpecies?.evolution_chain?.url && <div className="pokemon-evolution flex flex-col bg-gray-800 border-2 border-gray-800 rounded-md p-4">
+                <div className="pokemon-evolution-label text-xl text-yellow-400 mb-4">Evolution</div>
                 <PokemonEvolutionChain evolutionChainUrl={pokemonSpecies.evolution_chain.url} />
-              </div>
+              </div>}
             </div>
           </div>
         </div>

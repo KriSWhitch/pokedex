@@ -2,9 +2,9 @@
 import { Pokemon, PokemonType } from "@/lib/definitions";
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
-import clsx from "clsx";
 import Link from "next/link";
 import { fetchData } from "@/constants/api";
+import { PokemonTypeBadge } from "./PokemonTypeBadge";
 
 export interface PokemonCardProps {
   pokemonUrl: string
@@ -29,7 +29,7 @@ const PokemonCard: FC<PokemonCardProps> = ({ pokemonUrl }) => {
 
   useEffect(() => {
     fetchPokemon(pokemonUrl);
-  }, []);
+  }, [pokemonUrl]);
 
   useEffect(() => {
     if (pokemon) {
@@ -38,55 +38,48 @@ const PokemonCard: FC<PokemonCardProps> = ({ pokemonUrl }) => {
   }, [pokemon]);
 
   return (
-    pokemon 
-    ? <li key={pokemon.name} className="pokemon-card__container w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex flex-col justify-center items-center p-4">
-        <div className="pokemon-card border-gray-700 border-2 border-r-4 shadow-lg rounded-lg w-full h-full flex flex-col justify-start items-center">
-          <Link className="w-full flex flex-col justify-center items-center" href={`/pokedex/${pokemon.name}`}>
-            <div className="pokemon-image bg-gray-100 rounded-t-md w-full flex flex-col justify-center items-center">
-              <Image src={`/images/sprites/pokemon/${pokemon.id}.png`} 
-                     width={475} height={475} alt={`Pokemon: ${pokemon.name}`} />
-            </div>
+    pokemon ? (
+      <li key={pokemon.name} className="group w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-3">
+        <div className="relative h-full bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 hover:border-gray-300">
+          {/* Image Section */}
+          <Link 
+            href={`/pokedex/${pokemon.name}`} 
+            className="block relative bg-gradient-to-b from-gray-50 to-gray-100 pt-[100%] overflow-hidden rounded-t-xl"
+            aria-label={`View details of ${pokemon.name}`}
+          >
+            <Image
+              src={`/images/sprites/pokemon/${pokemon.id}.png`}
+              alt={`Pokemon: ${pokemon.name}`}
+              fill
+              className="object-contain transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+            />
           </Link>
-          <div className="pokemon-info flex flex-col justify-center items-center p-2 pb-4">
-            <p className="pokemon-id text-gray-400 text-xs mb-1">#{pokemonFormatedId}</p>
-            <div className="pokemon-name text-2xl break-all mb-2">{capitalizeFirstLetter(pokemon.name)}</div>
-            <ul className="pokemon-types flex gap-2 flex-wrap justify-center items-center">
-              {pokemon.types.map((type: PokemonType) => {
-                return (<li key={type.type.name} 
-                            className={clsx("pokemon-type text-sm rounded-md px-4 py-1 min-w-12 flex justify-center items-center", 
-                            {
-                              "bg-[#9199a3] text-white": type.type.name === "normal",
-                              "bg-[#cf4169] text-white": type.type.name === "fighting",
-                              "bg-[#8fa9dc] text-white": type.type.name === "flying",
-                              "bg-[#a86bc8] text-white": type.type.name === "poison",
-                              "bg-[#d87845] text-white": type.type.name === "ground",
-                              "bg-[#c3b88a] text-white": type.type.name === "rock",
-                              "bg-[#4d553e] text-white": type.type.name === "bug",
-                              "bg-[#5269ad] text-white": type.type.name === "ghost",
-                              "bg-[#588fa3] text-white": type.type.name === "steel",
-                              "bg-[#ff9d54] text-white": type.type.name === "fire",
-                              "bg-[#4d92d7] text-white": type.type.name === "water",
-                              "bg-[#5fbe56] text-white": type.type.name === "grass",
-                              "bg-[#f4d23b] text-white": type.type.name === "electric",
-                              "bg-[#f67476] text-white": type.type.name === "psychic",
-                              "bg-[#73cebf] text-white": type.type.name === "ice",
-                              "bg-[#0b6dc4] text-white": type.type.name === "dragon",
-                              "bg-[#5b5464] text-white": type.type.name === "dark",
-                              "bg-[#ec90e7] text-white": type.type.name === "fairy",
-                              "bg-[#485172] text-white": type.type.name === "stellar",
-                              "bg-[#95c5b7] text-white": type.type.name === "unknown",
-                            }
-                )}>
-                  {capitalizeFirstLetter(type.type.name)}
-                </li>)
-              })}
-            </ul>
-
+          
+          {/* Information Section */}
+          <div className="p-4 cursor-default">
+            <div className="flex justify-start items-center mb-1">
+              <span className="text-gray-500 text-sm font-mono">#{pokemonFormatedId}</span>
+            </div>
+            
+            <h3 className="text-xl font-bold text-gray-800 mb-3">
+              {capitalizeFirstLetter(pokemon.name)}
+            </h3>
+            
+            <div className="flex flex-wrap gap-2 justify-start">
+              {pokemon.types.map((type: PokemonType) => (
+                <PokemonTypeBadge 
+                  key={type.type.name} 
+                  type={type.type.name}
+                  size="sm"
+                />
+              ))}
+            </div>
           </div>
         </div>
-    </li>
-    : <></>
+      </li>
+    ) : null
   );
-}
+};
 
 export default PokemonCard;

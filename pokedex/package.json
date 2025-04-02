@@ -13,7 +13,7 @@
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
-    "next": "^15.2.0",
+    "next": "^15.2.4",
     "pokedex": "file:",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

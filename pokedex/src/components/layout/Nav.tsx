@@ -12,7 +12,7 @@ export default function Nav() {
             <Link href="/">Pokedex</Link>
           </div>
           
-          {/* Бургер-меню для мобильных */}
+          {/* Mobile menu (burger button) */}
           <button 
             className="md:hidden focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
@@ -24,7 +24,7 @@ export default function Nav() {
             </div>
           </button>
           
-          {/* Десктопное меню */}
+          {/* Desktop menu */}
           <ul className="hidden md:flex gap-8">
             <li>
               <Link href="/" className="text-yellow-400 hover:text-yellow-200 font-secondary text-xs">Home</Link>
@@ -39,15 +39,13 @@ export default function Nav() {
         </div>
       </nav>
       
-      {/* Мобильное меню (выезжает сбоку) */}
+      {/*Mobile menu */}
       <div className={`fixed top-0 left-0 w-full h-full z-40 transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-        {/* Затемнение фона */}
         <div 
           className={`absolute top-0 left-0 w-full h-full bg-black transition-opacity duration-300 ${isOpen ? 'opacity-50' : 'opacity-0'}`}
           onClick={() => setIsOpen(false)}
         ></div>
         
-        {/* Само меню */}
         <div className={`absolute top-0 right-0 w-64 h-full bg-gray-800 shadow-lg transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           <ul className="flex flex-col px-8 py-16 gap-6">
             <li>

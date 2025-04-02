@@ -51,7 +51,7 @@ export default function About() {
         <div className="pt-4">
           <Link 
             href="/pokedex" 
-            className="inline-block bg-gray-800 hover:bg-gray-700 text-yellow-400 hover:text-yellow-300 px-4 py-2 rounded transition-colors"
+            className="inline-block bg-gray-800 hover:bg-gray-700 text-yellow-400 hover:text-yellow-300 px-4 py-2 rounded transition-colors mb-4"
           >
             Back to Pokédex
           </Link>

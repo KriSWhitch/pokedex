@@ -1,3 +1,5 @@
+import { PokemonTypeName } from "./enums";
+
 export type PokemonData = {
   count: number,
   next: string,
@@ -62,7 +64,7 @@ export type PokemonType = {
 
 export type Type = {
   id: number,
-  name: string,
+  name: PokemonTypeName,
   url: string,
   damage_relations: TypeRelations
 };
