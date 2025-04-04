@@ -1,41 +1,43 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+### Local Dependencies ###
+pokedex/node_modules/
+pokedex/.pnp
+pokedex/.pnp.*
+pokedex/.yarn/*
+!pokedex/.yarn/patches        # Allow necessary Yarn files
+!pokedex/.yarn/plugins
+!pokedex/.yarn/releases
+!pokedex/.yarn/versions
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+### Next.js Build Artifacts ###
+pokedex/.next/                # Next.js build cache
+pokedex/.next/cache
+pokedex/.next/static
+pokedex/.next/server
+pokedex/.next/build
+pokedex/out/                  # Static export output
+pokedex/build/                # Custom build dir (if used)
+pokedex/.vercel               # Vercel deployment cache
 
-# testing
-/coverage
+### Testing & Coverage ###
+pokedex/coverage/             # Test coverage reports
 
-# next.js
-/.next/
-/out/
+### Environment Variables ###
+pokedex/.env*                 # All .env files (development/production)
+pokedex/.env.local            # Local overrides
+pokedex/.env.development.local
+pokedex/.env.test.local
+pokedex/.env.production.local
 
-# production
-/build
+### Logs ###
+pokedex/npm-debug.log*        # NPM/Yarn/PNPM debug logs
+pokedex/yarn-debug.log*
+pokedex/yarn-error.log*
+pokedex/.pnpm-debug.log*
 
-# misc
-.DS_Store
-*.pem
+### TypeScript ###
+pokedex/*.tsbuildinfo         # TS incremental compilation cache
+pokedex/next-env.d.ts         # Next.js TypeScript declarations
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+### System Files ###
+.DS_Store                     # macOS metadata
+*.pem                         # Certificate files (if any)
